@@ -49,6 +49,9 @@ class NvlinkTransport : public Transport {
 
     static void *allocatePinnedLocalMemory(size_t length);
 
+    int relocateSharedMemoryAddress(uint64_t& dest_addr, uint64_t length,
+                                    uint64_t target_id);
+
     static void freePinnedLocalMemory(void *addr);
 
    protected:
@@ -67,9 +70,6 @@ class NvlinkTransport : public Transport {
 
     int unregisterLocalMemoryBatch(
         const std::vector<void*>& addr_list) override;
-
-    int relocateSharedMemoryAddress(uint64_t& dest_addr, uint64_t length,
-                                    uint64_t target_id);
 
     const char* getName() const override { return "nvlink"; }
 
