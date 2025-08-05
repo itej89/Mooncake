@@ -37,7 +37,8 @@
 #ifdef USE_CUDA
 #include <bits/stdint-uintn.h>
 #include <cuda_runtime.h>
-
+#elif USE_ROCM
+#include "cuda_shims.h"
 #ifdef USE_NVMEOF
 #include <cufile.h>
 #endif

@@ -57,6 +57,7 @@ option(BUILD_EXAMPLES "Build examples" ON)
 
 option(BUILD_UNIT_TESTS "Build uint tests" ON)
 option(USE_CUDA "option for enabling gpu features" OFF)
+option(USE_ROCM "option for enabling gpu features" OFF)
 option(USE_NVMEOF "option for using NVMe over Fabric" OFF)
 option(USE_TCP "option for using TCP transport" ON)
 option(USE_ASCEND "option for using npu" OFF)
@@ -87,7 +88,7 @@ if (USE_NVMEOF)
 endif()
 
 if (USE_MNNVL)
-  set(USE_CUDA ON)
+  # set(USE_CUDA ON)
   add_compile_definitions(USE_MNNVL)
   message(STATUS "Multi-Node NVLink support is enabled")
 endif()
@@ -101,6 +102,23 @@ if (USE_CUDA)
     /usr/local/cuda/lib64
   )
 endif()
+
+
+if (USE_ROCM)
+  set(CMAKE_CXX_COMPILER /opt/rocm/bin/hipcc)
+  add_compile_definitions(USE_ROCM __HIP_PLATFORM_AMD__)
+  message(STATUS "ROCm support is enabled")
+
+  # ROCm include directory
+  include_directories(/opt/rocm/include)
+
+  # ROCm library directories
+  link_directories(
+    /opt/rocm/lib
+    /opt/rocm/lib64
+  )
+endif()
+
 
 if (USE_CXL)
   add_compile_definitions(USE_CXL)

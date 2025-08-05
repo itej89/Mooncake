@@ -3,7 +3,11 @@
 #ifndef NVLINK_TRANSPORT_H_
 #define NVLINK_TRANSPORT_H_
 
+#ifdef USE_CUDA
 #include <cuda_runtime.h>
+#elif USE_ROCM
+#include "cuda_shims.h"
+#endif
 
 #include <functional>
 #include <iostream>

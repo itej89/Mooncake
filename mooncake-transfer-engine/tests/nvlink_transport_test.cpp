@@ -1,7 +1,11 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 #include <gtest/gtest.h>
+#ifdef USE_CUDA
 #include <cuda_runtime.h>
+#elif USE_ROCM
+#include "cuda_shims.h"
+#endif
 #include <thread>
 #include <memory>
 #include <cstring>

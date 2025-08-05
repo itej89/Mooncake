@@ -1,0 +1,75 @@
+#pragma once
+
+#include <hip/hip_runtime.h>
+
+
+#define curand_uniform hiprand_uniform
+#define curand_init hiprand_init
+#define curandState_t hiprandState_t
+
+#define cub hipcub
+#define check_cuda_value ROCM_CHECK
+
+#define cudaStream_t hipStream_t
+#define cudaStreamSynchronize hipStreamSynchronize
+
+#define cudaEvent_t hipEvent_t
+
+#define cudaGetDevice hipGetDevice
+#define cudaSetDevice hipSetDevice
+#define cudaGetDeviceCount hipGetDeviceCount
+#define cudaDeviceEnablePeerAccess hipDeviceEnablePeerAccess
+#define cudaDeviceDisablePeerAccess hipDeviceDisablePeerAccess
+#define cudaDeviceCanAccessPeer hipDeviceCanAccessPeer
+#define cudaDeviceGetAttribute hipDeviceGetAttribute
+#define cudaDevAttrMultiProcessorCount hipDeviceAttributeMultiprocessorCount
+#define cudaDevAttrMaxSharedMemoryPerMultiprocessor hipDeviceAttributeMaxSharedMemoryPerMultiprocessor
+
+#define cudaFuncSetAttribute hipFuncSetAttribute
+#define cudaFuncAttributeMaxDynamicSharedMemorySize hipFuncAttributeMaxDynamicSharedMemorySize
+#define cudaOccupancyMaxActiveBlocksPerMultiprocessor hipOccupancyMaxActiveBlocksPerMultiprocessor
+#define cudaDeviceSynchronize hipDeviceSynchronize
+
+#define cudaFree hipFree
+#define cudaMalloc hipMalloc
+#define cudaMemcpy hipMemcpy
+#define cudaMemset hipMemset
+#define cudaMemsetAsync hipMemsetAsync
+#define cudaMemcpyAsync hipMemcpyAsync
+#define cudaMemcpyDeviceToHost hipMemcpyDeviceToHost
+#define cudaMemcpyHostToDevice hipMemcpyHostToDevice
+#define cudaMemcpyDeviceToDevice hipMemcpyDeviceToDevice
+#define cudaMalloc hipMalloc
+#define cudaMallocAsync hipMallocAsync
+#define cudaFree hipFree
+#define cudaFreeAsync hipFreeAsync
+
+
+#define cudaEventSynchronize hipEventSynchronize
+#define cudaEventCreate hipEventCreate
+#define cudaEventRecord hipEventRecord
+#define cudaEventDestroy hipEventDestroy
+#define cudaEventElapsedTime hipEventElapsedTime
+
+#define cudaError_t hipError_t
+#define cudaGetErrorString hipGetErrorString
+#define cudaSuccess hipSuccess
+#define check_cuda_error() rocm::syncAndCheckInDebug(__FILE__, __LINE__)
+#define cudaDeviceProp hipDeviceProp_t
+
+#define cudaErrorNotReady hipErrorNotReady
+#define cudaErrorPeerAccessAlreadyEnabled hipErrorPeerAccessAlreadyEnabled
+
+#define cudaStreamQuery hipStreamQuery
+#define cudaStreamCreate hipStreamCreate
+#define cudaStreamDestroy hipStreamDestroy
+
+#define CUDA_IPC_HANDLE_SIZE HIP_IPC_HANDLE_SIZE
+#define cudaIpcGetMemHandle hipIpcGetMemHandle
+#define cudaIpcOpenMemHandle hipIpcOpenMemHandle
+#define cudaIpcCloseMemHandle hipIpcCloseMemHandle
+#define cudaIpcMemHandle_t hipIpcMemHandle_t
+#define cudaIpcOpenMemHandle hipIpcOpenMemHandle
+#define cudaIpcMemLazyEnablePeerAccess hipIpcMemLazyEnablePeerAccess
+
+    // Taken from cuda_utils.h

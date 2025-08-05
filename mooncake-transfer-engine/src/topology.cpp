@@ -24,6 +24,8 @@
 
 #ifdef USE_CUDA
 #include <cuda_runtime.h>
+#elif USE_ROCM
+#include "cuda_shims.h"
 #endif
 
 #include <ctype.h>

@@ -34,6 +34,8 @@
 #include <bits/stdint-uintn.h>
 #include <cuda_runtime.h>
 #include <cuda.h>
+#elif USE_ROCM
+#include "cuda_shims.h"
 
 #ifdef USE_NVMEOF
 #include <cufile.h>
