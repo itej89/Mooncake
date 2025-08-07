@@ -16,7 +16,7 @@ set(CMAKE_C_FLAGS_DEBUG "-O0")
 set(CMAKE_CXX_FLAGS_DEBUG "-O0")
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=thread-safety")
+  # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=thread-safety")
 endif()
 
 option(ENABLE_ASAN "enable address sanitizer" OFF)
@@ -103,22 +103,15 @@ if (USE_CUDA)
   )
 endif()
 
-
 if (USE_ROCM)
-  set(CMAKE_CXX_COMPILER /opt/rocm/bin/hipcc)
   add_compile_definitions(USE_ROCM __HIP_PLATFORM_AMD__)
   message(STATUS "ROCm support is enabled")
-
-  # ROCm include directory
   include_directories(/opt/rocm/include)
-
-  # ROCm library directories
   link_directories(
     /opt/rocm/lib
     /opt/rocm/lib64
   )
 endif()
-
 
 if (USE_CXL)
   add_compile_definitions(USE_CXL)

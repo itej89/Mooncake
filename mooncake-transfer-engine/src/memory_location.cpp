@@ -38,7 +38,7 @@ const std::vector<MemoryLocationEntry> getMemoryLocation(void *start,
                                                          size_t len) {
     std::vector<MemoryLocationEntry> entries;
 
-#ifdef USE_CUDA
+#if defined(USE_CUDA) || defined(USE_ROCM)
     cudaPointerAttributes attributes;
     cudaError_t result;
     result = cudaPointerGetAttributes(&attributes, start);

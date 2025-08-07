@@ -28,11 +28,15 @@
 #elif USE_ROCM
 #include <bits/stdint-uintn.h>
 #include "cuda_shims.h"
+#endif
 
+#if defined(USE_CUDA) || defined(USE_ROCM)
 #ifdef USE_NVMEOF
 #include <cufile.h>
 #endif
+#endif
 
+#if defined(USE_CUDA) || defined(USE_ROCM)
 #include <cassert>
 
 #include "common/base/status.h"
@@ -49,7 +53,7 @@ static void checkCudaError(cudaError_t result, const char *message) {
 #include "transfer_engine.h"
 #include "transport/transport.h"
 
-#ifdef USE_CUDA
+#if defined(USE_CUDA) || defined(USE_ROCM)
 DEFINE_int32(gpu_id, 0, "GPU ID to use");
 #endif
 

@@ -36,11 +36,16 @@
 #include <cuda_runtime.h>
 #elif USE_ROCM
 #include "cuda_shims.h"
+#endif
 
+
+#ifdef USE_CUDA
 #ifdef USE_NVMEOF
 #include <cufile.h>
 #endif
+#endif
 
+#if defined(USE_CUDA) || defined(USE_ROCM)
 #ifdef USE_NVLINK
 #include <transport/nvlink_transport/nvlink_transport.h>
 #endif
@@ -56,7 +61,7 @@ static void checkCudaError(cudaError_t result, const char *message) {
 }
 #endif
 
-#ifdef USE_CUDA
+#if defined(USE_CUDA) || defined(USE_ROCM)
 const static int NR_SOCKETS = 4;
 #else
 const static int NR_SOCKETS =
@@ -88,7 +93,7 @@ DEFINE_bool(auto_discovery, false, "Enable auto discovery");
 DEFINE_string(report_unit, "GB", "Report unit: GB|GiB|Gb|MB|MiB|Mb|KB|KiB|Kb");
 DEFINE_uint32(report_precision, 2, "Report precision");
 
-#ifdef USE_CUDA
+#if defined(USE_CUDA) || defined(USE_ROCM)
 DEFINE_bool(use_vram, true, "Allocate memory from GPU VRAM");
 DEFINE_int32(gpu_id, 0, "GPU ID to use");
 #endif
@@ -97,7 +102,7 @@ using namespace mooncake;
 
 static void *allocateMemoryPool(size_t size, int socket_id,
                                 bool from_vram = false) {
-#ifdef USE_CUDA
+#if defined(USE_CUDA) || defined(USE_ROCM)
     if (from_vram) {
         int gpu_id = FLAGS_gpu_id;
         void *d_buf;
@@ -115,7 +120,7 @@ static void *allocateMemoryPool(size_t size, int socket_id,
 }
 
 static void freeMemoryPool(void *addr, size_t size) {
-#ifdef USE_CUDA
+#if defined(USE_CUDA) || defined(USE_ROCM)
 #ifdef USE_NVLINK
     CUmemGenericAllocationHandle handle;
     auto result = cuMemRetainAllocationHandle(&handle, addr);
@@ -315,7 +320,7 @@ int initiator() {
     std::vector<void *> addr(NR_SOCKETS, nullptr);
     int buffer_num = NR_SOCKETS;
 
-#ifdef USE_CUDA
+#if defined(USE_CUDA) || defined(USE_ROCM)
     if (FLAGS_use_vram) LOG(INFO) << "VRAM is used";
     for (int i = 0; i < buffer_num; ++i) {
         addr[i] = allocateMemoryPool(FLAGS_buffer_size, i, FLAGS_use_vram);
@@ -409,7 +414,7 @@ int target() {
     std::vector<void *> addr(NR_SOCKETS, nullptr);
     int buffer_num = NR_SOCKETS;
 
-#ifdef USE_CUDA
+#if defined(USE_CUDA) || defined(USE_ROCM)
     if (FLAGS_use_vram) LOG(INFO) << "VRAM is used";
     for (int i = 0; i < buffer_num; ++i) {
         addr[i] = allocateMemoryPool(FLAGS_buffer_size, i, FLAGS_use_vram);

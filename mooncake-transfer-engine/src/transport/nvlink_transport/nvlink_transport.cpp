@@ -66,7 +66,7 @@ static bool supportFabricMem() {
         LOG(ERROR) << "NvlinkTransport: no device found";
         return false;
     }
-
+#ifdef USE_CUDA
     for (int device_id = 0; device_id < num_devices; ++device_id) {
         int device_support_fabric_mem = 0;
         cuDeviceGetAttribute(&device_support_fabric_mem,
@@ -76,6 +76,7 @@ static bool supportFabricMem() {
             return false;
         }
     }
+#endif
     return true;
 }
 
@@ -572,7 +573,11 @@ void *NvlinkTransport::allocatePinnedLocalMemory(size_t size) {
     }
     prop.type = CU_MEM_ALLOCATION_TYPE_PINNED;
     prop.location.type = CU_MEM_LOCATION_TYPE_DEVICE;
+    #ifdef USE_CUDA
     prop.requestedHandleTypes = CU_MEM_HANDLE_TYPE_FABRIC;
+    #elif USE_ROCM
+    prop.requestedHandleType = CU_MEM_HANDLE_TYPE_FABRIC;
+    #endif
     prop.location.id = currentDev;
     result = cuDeviceGetAttribute(
         &flag, CU_DEVICE_ATTRIBUTE_GPU_DIRECT_RDMA_WITH_CUDA_VMM_SUPPORTED,

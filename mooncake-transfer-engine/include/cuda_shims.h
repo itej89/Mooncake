@@ -72,4 +72,45 @@
 #define cudaIpcOpenMemHandle hipIpcOpenMemHandle
 #define cudaIpcMemLazyEnablePeerAccess hipIpcMemLazyEnablePeerAccess
 
-    // Taken from cuda_utils.h
+#define cudaPointerAttributes hipPointerAttribute_t
+#define cudaPointerGetAttributes hipPointerGetAttributes
+#define cudaMemoryTypeDevice  hipMemoryTypeDevice
+#define cudaDeviceGetPCIBusId hipDeviceGetPCIBusId
+#define cudaMemoryTypeHost hipMemoryTypeHost
+#define cudaMemoryTypeUnregistered hipMemoryTypeUnregistered
+#define cuMemGetAddressRange hipMemGetAddressRange
+
+#define cudaMemcpyDefault hipMemcpyDefault
+#define CUmemGenericAllocationHandle hipMemGenericAllocationHandle_t
+#define CUdeviceptr hipDeviceptr_t
+
+#define cuMemRelease hipMemRelease
+#define cuMemUnmap hipMemUnmap
+#define cuMemAddressFree hipMemAddressFree
+#define cuMemRetainAllocationHandle hipMemRetainAllocationHandle
+#define cuMemExportToShareableHandle hipMemExportToShareableHandle
+#define cuMemImportFromShareableHandle hipMemImportFromShareableHandle
+#define cuMemAddressReserve hipMemAddressReserve
+#define cuMemMap hipMemMap                                                                                                                                                                                                        
+#define cuMemSetAccess hipMemSetAccess
+#define CUdevice hipDevice_t
+#define CUmemAllocationProp hipMemAllocationProp
+#define CUmemGenericAllocationHandle hipMemGenericAllocationHandle_t
+#define CUresult hipError_t
+#define cuDeviceGetAttribute hipDeviceGetAttribute
+#define cuMemGetAllocationGranularity hipMemGetAllocationGranularity
+#define cuMemCreate hipMemCreate
+#define CUmemAccessDesc hipMemAccessDesc
+#define cuDeviceGet hipDeviceGet
+#define CU_MEM_ALLOC_GRANULARITY_MINIMUM hipMemAllocationGranularityMinimum
+#define CUDA_SUCCESS hipSuccess
+
+// To be recheck
+#define CUmemFabricHandle void*
+#define CU_MEM_HANDLE_TYPE_FABRIC hipMemHandleTypePosixFileDescriptor 
+#define CU_DEVICE_ATTRIBUTE_GPU_DIRECT_RDMA_WITH_CUDA_VMM_SUPPORTED hipDeviceAttributeVirtualMemoryManagementSupported 
+#define CU_MEM_ACCESS_FLAGS_PROT_READWRITE hipMemAccessFlagsProtReadWrite 
+#define CU_MEM_LOCATION_TYPE_DEVICE hipMemLocationTypeDevice
+#define CU_MEM_ALLOCATION_TYPE_PINNED hipMemAllocationTypePinned
+  
+// Taken from cuda_utils.h

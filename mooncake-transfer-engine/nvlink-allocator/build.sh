@@ -9,6 +9,13 @@ if [[ "$1" == "--use-nvcc" ]]; then
     shift
 fi
 
+# Check for --use-hipcc flag
+USE_HIPCC=false
+if [[ "$1" == "--use-hipcc" ]]; then
+    USE_HIPCC=true
+    shift
+fi
+
 # Get output directory from command line argument, default to current directory
 OUTPUT_DIR=${1:-.}
 
@@ -20,9 +27,14 @@ CPP_FILE=$(dirname $(readlink -f $0))/nvlink_allocator.cpp  # get cpp file path,
 
 # Use nvcc or g++ based on flag
 if [ "$USE_NVCC" = true ]; then
-    nvcc "$CPP_FILE" -o "$OUTPUT_DIR/nvlink_allocator.so" -shared -Xcompiler -fPIC -lcuda -I/usr/local/cuda/include
+    nvcc "$CPP_FILE" -o "$OUTPUT_DIR/nvlink_allocator.so" -shared -Xcompiler -fPIC -lcuda -I/usr/local/cuda/include -DUSE_CUDA=1
+elif [ "$USE_HIPCC" = true ]; then
+    shift
+    INCLUDE_LIST=${1}
+    INCLUDE_FLAGS=$(echo "$INCLUDE_LIST" | tr ' ' '\n' | sed 's/^/-I/' | paste -sd' ' -)
+    hipcc "$CPP_FILE" -o "$OUTPUT_DIR/nvlink_allocator.so" -shared -fPIC -lamdhip64 -I/opt/rocm/include ${INCLUDE_FLAGS} -DUSE_ROCM=1
 else
-    g++ "$CPP_FILE" -o "$OUTPUT_DIR/nvlink_allocator.so" --shared -fPIC -lcuda -I/usr/local/cuda/include
+    g++ "$CPP_FILE" -o "$OUTPUT_DIR/nvlink_allocator.so" --shared -fPIC -lcuda -I/usr/local/cuda/include -DUSE_CUDA=1
 fi
 
 if [ $? -eq 0 ]; then

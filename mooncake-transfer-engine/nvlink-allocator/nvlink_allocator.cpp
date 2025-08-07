@@ -1,8 +1,13 @@
+#ifdef USE_CUDA
 #include <cuda.h>
 #include <cuda_runtime_api.h>
+#elif USE_ROCM
+#include "cuda_shims.h"
+#endif
 #include <sys/types.h>
 
 #include <iostream>
+
 
 extern "C" {
 void *mc_nvlink_malloc(ssize_t size, int device, cudaStream_t stream) {
@@ -20,7 +25,11 @@ void *mc_nvlink_malloc(ssize_t size, int device, cudaStream_t stream) {
     }
     prop.type = CU_MEM_ALLOCATION_TYPE_PINNED;
     prop.location.type = CU_MEM_LOCATION_TYPE_DEVICE;
+#ifdef USE_CUDA
     prop.requestedHandleTypes = CU_MEM_HANDLE_TYPE_FABRIC;
+#elif USE_ROCM
+    prop.requestedHandleType = CU_MEM_HANDLE_TYPE_FABRIC;
+#endif
     prop.location.id = currentDev;
     result = cuDeviceGetAttribute(
         &flag, CU_DEVICE_ATTRIBUTE_GPU_DIRECT_RDMA_WITH_CUDA_VMM_SUPPORTED,

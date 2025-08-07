@@ -36,7 +36,9 @@
 #include <cuda.h>
 #elif USE_ROCM
 #include "cuda_shims.h"
+#endif
 
+#if defined(USE_CUDA) || defined(USE_ROCM)
 #ifdef USE_NVMEOF
 #include <cufile.h>
 #endif
@@ -86,7 +88,7 @@ DEFINE_bool(auto_discovery, false, "Enable auto discovery");
 DEFINE_string(report_unit, "GB", "Report unit: GB|GiB|Gb|MB|MiB|Mb|KB|KiB|Kb");
 DEFINE_uint32(report_precision, 2, "Report precision");
 
-#ifdef USE_CUDA
+#if defined(USE_CUDA) || defined(USE_ROCM)
 DEFINE_bool(use_vram, true, "Allocate memory from GPU VRAM");
 DEFINE_int32(gpu_id, 0, "GPU ID to use, -1 for all GPUs");
 #endif
@@ -95,7 +97,7 @@ using namespace mooncake;
 
 static void *allocateMemoryPool(size_t size, int buffer_id,
                                 bool from_vram = false) {
-#ifdef USE_CUDA
+#if defined(USE_CUDA) || defined(USE_ROCM)
     if (from_vram) {
         int gpu_id;
         if (FLAGS_gpu_id == -1) {
@@ -119,7 +121,7 @@ static void *allocateMemoryPool(size_t size, int buffer_id,
 }
 
 static void freeMemoryPool(void *addr, size_t size) {
-#ifdef USE_CUDA
+#if defined(USE_CUDA) || defined(USE_ROCM)
 #ifdef USE_MNNVL
     CUmemGenericAllocationHandle handle;
     auto result = cuMemRetainAllocationHandle(&handle, addr);
@@ -312,7 +314,7 @@ int initiator() {
     }
 
     std::vector<void *> addr;
-#ifdef USE_CUDA
+#if defined(USE_CUDA) || defined(USE_ROCM)
     if (FLAGS_use_vram) {
         int gpu_num;
         LOG(INFO) << "VRAM is used";
@@ -431,7 +433,7 @@ int target() {
     }
 
     std::vector<void *> addr;
-#ifdef USE_CUDA
+#if defined(USE_CUDA) || defined(USE_ROCM)
     if (FLAGS_use_vram) {
         int gpu_num;
         LOG(INFO) << "VRAM is used";
