@@ -39,6 +39,10 @@ if [ -d "/usr/local/cuda/lib64" ]; then
     EXT_LDFLAGS+=" -L/usr/local/cuda/lib64 -lcudart"
 fi
 
+if [ -d "/opt/rocm/lib" ]; then
+    EXT_LDFLAGS+=" -L/opt/rocm/lib64 -L/opt/rocm/lib -lamdhip64"
+fi
+
 if [ "$USE_ETCD" = "ON" ]; then
     if [ "$USE_ETCD_LEGACY" = "ON" ]; then
         EXT_LDFLAGS+=" -letcd-cpp-api -lprotobuf -lgrpc++ -lgrpc"
